@@ -29,3 +29,29 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+///////////////////////////////////////
+// * Scrolling 
+// ? old verision window.scrollTo(요소의 절대좌표)
+// MEMO: 절대좌표 = getBoundingClientRect().top + window.pageYOffset;
+
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener("click", () => {
+
+  // const sec1Coord = section1.getBoundingClientRect();
+  // const absCoord = sec1Coord.top + window.pageYOffset;
+  
+  // window.scrollTo({
+  //   left: 0,
+  //   top: absCoord,
+  //   behavior: "smooth"
+  // });
+
+  // ? modern javascript
+  section1.scrollIntoView({behavior: "smooth"})
+
+}) 
+
+
