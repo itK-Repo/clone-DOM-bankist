@@ -55,3 +55,20 @@ btnScrollTo.addEventListener("click", () => {
 }) 
 
 
+///////////////////////////////////////
+// *  page navigation
+const nav = document.querySelector(".nav__links");
+nav.addEventListener("click", (e) => {
+  // MEMO: a 태그의 기본 동작(href경로로 이동)을 막음 -> href는 데이터로서 사용하기 위함
+  e.preventDefault();
+
+  // MEMO: 이벤트 위임에는 Matching strategy가 필요하다.
+  if (e.target.classList.contains("nav__link")) {
+    // MEMO: href의 상대적 경로를 가져오기위해 getAttribute를 사용함.
+    const id = e.target.getAttribute("href");
+    document.querySelector(id).scrollIntoView({behavior: "smooth"})
+  }
+})
+
+///////////////////////////////////////
+// *  
