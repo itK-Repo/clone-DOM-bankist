@@ -71,4 +71,29 @@ nav.addEventListener("click", (e) => {
 })
 
 ///////////////////////////////////////
-// *  
+// * tab component
+const tabContainer = document.querySelector(".operations__tab-container");
+const tabs = tabContainer.querySelectorAll(".btn");
+const contents = document.querySelectorAll(".operations__content");
+
+tabContainer.addEventListener("click", (e) => {
+  //MEMO: 클릭된 것이 버튼안의 span 요소라면..?
+  const clicked = e.target.closest(".operations__tab");
+
+  if (!clicked) return;
+  
+  
+  tabs.forEach((btn) => {
+    btn.classList.remove("operations__tab--active")
+  })
+  contents.forEach((btn) => {
+    btn.classList.remove("operations__content--active")
+  })
+
+  // MEMO: button에 dataset을 content와 연관시키도록 하여 활용한다.
+  clicked.classList.add("operations__tab--active")
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
+  
+})
