@@ -180,3 +180,60 @@ const imgObserver = new IntersectionObserver(loadImg, {
 });
 
 lazyImages.forEach(el => imgObserver.observe(el))
+
+
+///////////////////////////////////////
+// * Slider
+const slides = document.querySelectorAll('.slide');
+const leftBtn = document.querySelector('.slider__btn--left');
+const rightBtn = document.querySelector('.slider__btn--right');
+const {next, prev, goto} = manageIndex();
+
+// 초기 슬라이더 위치 설정
+goToSlide(0);
+
+// 버튼에 클릭 이벤트 -> 슬라이더 위치 이동시키기
+rightBtn.addEventListener('click', () => {
+  const currentIdx = next();
+  goToSlide(currentIdx)
+})
+leftBtn.addEventListener('click', () => {
+  const currentIdx = prev();
+  goToSlide(currentIdx)
+})
+
+// 함수: 인덱스 기반으로 슬라이드 위치 조정
+function goToSlide(currentIdx) {
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${100 * (i - currentIdx)}%)`
+  })
+}
+// MEMO: index를 관리하는 클로저 모듈 패턴 사용
+// 함수: 슬라이드 인덱스 증가, 감소, 이동 함수 반환
+function manageIndex(initialIndex = 0) {
+  let currentIdx = initialIndex;
+  const MAX_SLIDE = slides.length;
+
+  function next() {
+    if (currentIdx >= MAX_SLIDE - 1) currentIdx = 0;
+    else currentIdx++;
+    return currentIdx;
+  } 
+
+  function prev() {
+    if (currentIdx <= 0) currentIdx = MAX_SLIDE - 1;
+    else currentIdx--;
+    return currentIdx;
+  }
+
+  function goto(index) {
+    if (0 <= index && index <= MAX_SLIDE - 1) currentIdx = index;
+    return currentIdx;
+  }
+
+  return {
+    next,
+    prev,
+    goto
+  }
+}
