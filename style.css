@@ -108,7 +108,7 @@ button:focus {
 img {
   transition: filter 0.5s;
 }
-
+/* lazy image 효과 */
 .lazy-img {
   filter: blur(20px);
 }

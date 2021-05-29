@@ -154,3 +154,29 @@ allSections.forEach(el => {
   revealObserver.observe(el);
   el.classList.add('section--hidden')
 })
+
+///////////////////////////////////////
+// * Lazy loading images
+const lazyImages = document.querySelectorAll('img[data-src]');
+
+const loadImg = ([entry], observer) => {
+  if (!entry.isIntersecting) return ;
+
+  const image = entry.target;
+
+  image.src = image.dataset.src;
+  // MEMO: src를 바꿔주고, 해당 이미지가 로딩되면 css 효과를 풀어주기 -> 바뀌기 전에는 css 효과를 유지하기 위함
+  image.addEventListener('load', () => {
+    image.classList.remove('lazy-img');
+  })
+
+  observer.unobserve(image);
+}
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '10px'
+});
+
+lazyImages.forEach(el => imgObserver.observe(el))
