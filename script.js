@@ -187,20 +187,54 @@ lazyImages.forEach(el => imgObserver.observe(el))
 const slides = document.querySelectorAll('.slide');
 const leftBtn = document.querySelector('.slider__btn--left');
 const rightBtn = document.querySelector('.slider__btn--right');
+const dotContainer = document.querySelector('.dots');
 const {next, prev, goto} = manageIndex();
 
-// 초기 슬라이더 위치 설정
-goToSlide(0);
 
-// 버튼에 클릭 이벤트 -> 슬라이더 위치 이동시키기
+// 초기 슬라이더 설정
+const init = () => {
+  createDots();
+  jumpToSlide(0);
+}
+init();
+
+// 버튼, 키보드에 클릭 이벤트 -> 슬라이더 위치 이동시키기
 rightBtn.addEventListener('click', () => {
-  const currentIdx = next();
-  goToSlide(currentIdx)
+  nextSlide();
 })
 leftBtn.addEventListener('click', () => {
+  prevSlide();
+})
+document.addEventListener('keydown', function (e) {
+  e.key === 'ArrowLeft' && prevSlide();
+  e.key === 'ArrowRight' && nextSlide();
+});
+// dot에 특정 인덱스로 이동하는 이벤트
+dotContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("dots__dot")) {
+    const index = e.target.dataset.slide;
+    jumpToSlide(index);
+  }
+})
+
+// 함수: 인덱스 관리 함수 + 슬라이드 위치 조정 -> 다음 이동, 이전 이동, 특정 인덱스로 이동
+function nextSlide() {
+  const currentIdx = next();
+  goToSlide(currentIdx)
+  activateDot(currentIdx);
+}
+
+function prevSlide() {
   const currentIdx = prev();
   goToSlide(currentIdx)
-})
+  activateDot(currentIdx);
+}
+
+function jumpToSlide(index) {
+  const currentIdx = goto(index);
+  goToSlide(currentIdx);
+  activateDot(currentIdx);
+}
 
 // 함수: 인덱스 기반으로 슬라이드 위치 조정
 function goToSlide(currentIdx) {
@@ -237,3 +271,24 @@ function manageIndex(initialIndex = 0) {
     goto
   }
 }
+
+function createDots() {
+  slides.forEach(function (_, i) {
+    //MEMO: html을 다시 파싱하지 않고, node들을 특정 위치에 추가한다.
+    dotContainer.insertAdjacentHTML(
+      'beforeend',
+      `<button class="dots__dot" data-slide="${i}"></button>`
+    );
+  });
+};
+
+
+function activateDot(index) {
+  document
+    .querySelectorAll('.dots__dot')
+    .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+  document
+    .querySelector(`.dots__dot[data-slide="${index}"]`)
+    .classList.add('dots__dot--active');
+};
