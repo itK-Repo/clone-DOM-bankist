@@ -92,5 +92,25 @@ tabContainer.addEventListener("click", (e) => {
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add("operations__content--active");
-  
 })
+
+///////////////////////////////////////
+// * Menu fade animation
+function hoverHandler(e) {
+  // class 확인
+  if(e.target.classList.contains('nav__link')) {
+    // 자신을 제외한 형제 노드, + 로고에게 opacity 변경을 주어야한다. 
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img')
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+
+}
+//MEMO: mouseenter(bubbling ❌), mouseover(하위 요소 클릭 시 nav까지 해당 이벤트가 버블링되서 이밴트리스너가 감지해야 하기 때문.)
+nav.addEventListener("mouseover", hoverHandler.bind(0.5))
+nav.addEventListener("mouseout", hoverHandler.bind(1))
