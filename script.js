@@ -1,13 +1,19 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
+// * Variable
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector(".btn--scroll-to");
+const section1 = document.querySelector('#section--1');
+const nav = document.querySelector(".nav__links");
+const tabContainer = document.querySelector(".operations__tab-container");
+const tabs = tabContainer.querySelectorAll(".btn");
+const contents = document.querySelectorAll(".operations__content");
 
+///////////////////////////////////////
+// * Modal window
 const openModal = function () {
   modal.classList.remove('hidden');
   overlay.classList.remove('hidden');
@@ -35,9 +41,6 @@ document.addEventListener('keydown', function (e) {
 // ? old verision window.scrollTo(요소의 절대좌표)
 // MEMO: 절대좌표 = getBoundingClientRect().top + window.pageYOffset;
 
-const btnScrollTo = document.querySelector(".btn--scroll-to");
-const section1 = document.querySelector('#section--1');
-
 btnScrollTo.addEventListener("click", () => {
 
   // const sec1Coord = section1.getBoundingClientRect();
@@ -57,7 +60,6 @@ btnScrollTo.addEventListener("click", () => {
 
 ///////////////////////////////////////
 // *  page navigation
-const nav = document.querySelector(".nav__links");
 nav.addEventListener("click", (e) => {
   // MEMO: a 태그의 기본 동작(href경로로 이동)을 막음 -> href는 데이터로서 사용하기 위함
   e.preventDefault();
@@ -72,16 +74,11 @@ nav.addEventListener("click", (e) => {
 
 ///////////////////////////////////////
 // * tab component
-const tabContainer = document.querySelector(".operations__tab-container");
-const tabs = tabContainer.querySelectorAll(".btn");
-const contents = document.querySelectorAll(".operations__content");
-
 tabContainer.addEventListener("click", (e) => {
   //MEMO: 클릭된 것이 버튼안의 span 요소라면..?
   const clicked = e.target.closest(".operations__tab");
 
   if (!clicked) return;
-  
   
   tabs.forEach((btn) => {
     btn.classList.remove("operations__tab--active")
