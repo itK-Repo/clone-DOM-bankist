@@ -12,7 +12,7 @@ const tabContainer = document.querySelector(".operations__tab-container");
 const tabs = tabContainer.querySelectorAll(".btn");
 const contents = document.querySelectorAll(".operations__content");
 const header = document.querySelector(".header");
-
+const allSections = document.querySelectorAll('.section');
 ///////////////////////////////////////
 // * Modal window
 const openModal = function () {
@@ -133,3 +133,24 @@ const headerObsOptions = {
 
 const headerObserver = new IntersectionObserver(stickyNav, headerObsOptions);
 headerObserver.observe(header);
+
+///////////////////////////////////////
+// * Reveal sections
+
+const revealSection = ([entry], observe) => {
+  // entry.target -> 이벤트가 발생한 요소
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observe.unobserve(entry.target); // 더이상 감시가 필요없어짐
+}
+
+const revealObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.1,
+});
+
+allSections.forEach(el => {
+  revealObserver.observe(el);
+  el.classList.add('section--hidden')
+})
