@@ -7,10 +7,11 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector('#section--1');
-const nav = document.querySelector(".nav__links");
+const nav = document.querySelector(".nav");
 const tabContainer = document.querySelector(".operations__tab-container");
 const tabs = tabContainer.querySelectorAll(".btn");
 const contents = document.querySelectorAll(".operations__content");
+const header = document.querySelector(".header");
 
 ///////////////////////////////////////
 // * Modal window
@@ -114,3 +115,21 @@ function hoverHandler(e) {
 //MEMO: mouseenter(bubbling ❌), mouseover(하위 요소 클릭 시 nav까지 해당 이벤트가 버블링되서 이밴트리스너가 감지해야 하기 때문.)
 nav.addEventListener("mouseover", hoverHandler.bind(0.5))
 nav.addEventListener("mouseout", hoverHandler.bind(1))
+
+///////////////////////////////////////
+// * Sticky Navigation
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = ([entry]) => {
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky')
+};
+
+const headerObsOptions = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px` // nav 높이 만큼 먼저 교차하게 된다.
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, headerObsOptions);
+headerObserver.observe(header);
